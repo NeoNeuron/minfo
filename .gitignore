@@ -1,0 +1,14 @@
+# ignore OSX folder conig file
+.DS_Store
+
+# ignore compiling folders
+bin/
+obj/
+dep/
+tmp/
+
+# ignore pictures
+*.png
+*.jpg
+*.jpeg
+*.eps
