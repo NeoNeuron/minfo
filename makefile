@@ -1,5 +1,5 @@
 # define compiler and path of libs
-CPPFLAGS = --std=c++11 -Wall -I $(DIR_INC)
+CPPFLAGS = --std=c++14 -Wall -I $(DIR_INC)
 CXXFLAGS = -g -O2
 LDLIBS = -lboost_program_options
 # define variable path

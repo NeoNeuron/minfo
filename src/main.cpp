@@ -9,6 +9,8 @@
 #include "common_header.h"
 #include <stdexcept>
 #include <boost/program_options.hpp>
+#include <xtensor/xarray.hpp>
+#include <xtensor/xnpy.hpp>
 using namespace std;
 namespace po = boost::program_options;
 // compact function to calculate mutual information between multi-type signal
@@ -23,7 +25,7 @@ int main(int argc, const char* argv[]) {
 		// TDMI types
 		("type,t", po::value<string>(), "type of MI, including : (with order)\nBB : bool & bool\nBD : bool & double\nDD : double & double")
 		// input files
-		("ifile,i", po::value<vector<string> >()->multitoken(), "[positional] : input data files")
+		("ifile,i", po::value<vector<string> >()->multitoken(), "[positional] : input data files, as numpy *.npy format.")
 		// output file
 		("ofile,o", po::value<string>(), "[positional] : output TDMI file")
 		// delay range
@@ -55,28 +57,44 @@ int main(int argc, const char* argv[]) {
 	if (type == "BB") {
 		// INPUT NEURONAL DATA:
 		vector<bool> x, y;
-		Read1DBin(dir + ifilename1, x, 0, 0);
-		Read1DBin(dir + ifilename2, y, 0, 0);
+		auto x_x = xt::load_npy<bool>(dir + ifilename1);
+		auto x_y = xt::load_npy<bool>(dir + ifilename2);
+		//Read1DBin(dir + ifilename1, x, 0, 0);
+		//Read1DBin(dir + ifilename2, y, 0, 0);
+		x.insert(x.end(), &x_x(0), &x_x(x_x.shape()[0]-1));
+		y.insert(y.end(), &x_y(0), &x_y(x_y.shape()[0]-1));
 		TDMI(x, y, tdmi, range);
 	} else if (type == "BD") {
 		vector<bool> bool_series;
 		vector<double> double_series;
-		Read1DBin(dir + ifilename1, bool_series, 0, 0);
-		Read1DBin(dir + ifilename2, double_series, 0, 0);
+		auto x_bool_series = xt::load_npy<bool>(dir + ifilename1);
+		auto x_double_series = xt::load_npy<double>(dir + ifilename2);
+		//Read1DBin(dir + ifilename1, bool_series, 0, 0);
+		//Read1DBin(dir + ifilename2, double_series, 0, 0);
+		bool_series.insert(bool_series.end(), &x_bool_series(0), &x_bool_series(x_bool_series.shape()[0]-1));
+		double_series.insert(double_series.end(), &x_double_series(0), &x_double_series(x_double_series.shape()[0]-1));
 		double binsize = vm["dx"].as<double>();
 		TDMI(bool_series, double_series, tdmi, range, binsize);
 	} else if (type == "BD2") {
 		vector<bool> bool_series;
 		vector<double> double_series;
-		Read1DBin(dir + ifilename1, bool_series, 0, 0);
-		Read1DBin(dir + ifilename2, double_series, 0, 0);
+		auto x_bool_series = xt::load_npy<bool>(dir + ifilename1);
+		auto x_double_series = xt::load_npy<double>(dir + ifilename2);
+		//Read1DBin(dir + ifilename1, bool_series, 0, 0);
+		//Read1DBin(dir + ifilename2, double_series, 0, 0);
+		bool_series.insert(bool_series.end(), &x_bool_series(0), &x_bool_series(x_bool_series.shape()[0]-1));
+		double_series.insert(double_series.end(), &x_double_series(0), &x_double_series(x_double_series.shape()[0]-1));
 		double threshold = vm["dx"].as<double>();
 		TDMI2bins(bool_series, double_series, tdmi, range, threshold);
 	} else if (type == "DD") {
 		vector<double> double_series_1, double_series_2;
-		Read1DBin(dir + ifilename1, double_series_1, 0, 0);
-		Read1DBin(dir + ifilename2, double_series_2, 0, 0);
+		auto x_double_series_1 = xt::load_npy<double>(dir + ifilename1);
+		auto x_double_series_2 = xt::load_npy<double>(dir + ifilename2);
+		//Read1DBin(dir + ifilename1, double_series_1, 0, 0);
+		//Read1DBin(dir + ifilename2, double_series_2, 0, 0);
 		double binsize = vm["dx"].as<double>();
+		double_series_1.insert(double_series_1.end(), &x_double_series_1(0), &x_double_series_1(x_double_series_1.shape()[0]-1));
+		double_series_2.insert(double_series_2.end(), &x_double_series_2(0), &x_double_series_2(x_double_series_2.shape()[0]-1));
 		vector<double> tdmi;
 		TDMI(double_series_1, double_series_2, tdmi, range, binsize);
 	} else {
