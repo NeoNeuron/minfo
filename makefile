@@ -50,8 +50,9 @@ $(DIR_BIN)/cal-lfp-simple : $(DIRS) lfp.o main_lfp_simple.o
 #mi_bd_unity.out : spike.o lfp.o mi_uniform.o mi_bd_unity.o
 #	$(CXX) -o $@ $^
 
-#sta.out : sta.o
-#	$(CXX) -o $@ $^
+$(DIR_BIN)/cal-sta : sta.o
+	$(CXX) $(CPPFLAGS) -o $@ $^ $(LDLIBS)
+	@mv *.o $(DIR_OBJ)
 
 ifeq ($(wildcard $(DIR_DEP)),)
 DEP_DIR_DEP := $(DIR_DEP)
