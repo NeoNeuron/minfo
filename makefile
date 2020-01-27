@@ -23,15 +23,12 @@ DEPS = $(SRCS:.cpp=.d)
 DEPS := $(addprefix $(DIR_DEP)/, $(DEPS))
 #OBJS := $(SRCS:.cpp=.o)
 #OBJS := $(addprefix $(DIR_OBJ)/, $(OBJS))
-BINS := $(DIR_BIN)/cal-mi $(DIR_BIN)/cal-spike $(DIR_BIN)/cal-lfp
+BINS := $(DIR_BIN)/cal-mi $(DIR_BIN)/cal-lfp
 
 .PHONY : all
 $all : $(DIRS) $(BINS)
 	@mv *.o $(DIR_OBJ)
 	@echo '>> ' $(BINS) ' are done'
-
-$(DIR_BIN)/cal-spike : spike.o main_spike.o
-	$(CXX) -o $@ $^ $(LDLIBS)
 
 $(DIR_BIN)/cal-lfp : lfp.o main_lfp.o
 	$(CXX) -o $@ $^ $(LDLIBS)
@@ -47,10 +44,11 @@ $(DIR_BIN)/cal-lfp-simple : $(DIRS) lfp.o main_lfp_simple.o
 #mi.out : mi_uniform.o main_mi.o
 #	$(CXX) -o $@ $^
 
-#mi_bd_unity.out : spike.o lfp.o mi_uniform.o mi_bd_unity.o
-#	$(CXX) -o $@ $^
-
 $(DIR_BIN)/cal-sta : sta.o
+	$(CXX) $(CPPFLAGS) -o $@ $^ $(LDLIBS)
+	@mv *.o $(DIR_OBJ)
+
+$(DIR_BIN)/cal-cc : main_cc.o
 	$(CXX) $(CPPFLAGS) -o $@ $^ $(LDLIBS)
 	@mv *.o $(DIR_OBJ)
 

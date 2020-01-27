@@ -12,3 +12,6 @@ tmp/
 *.jpg
 *.jpeg
 *.eps
+
+# ignore cython files
+*.pyc
