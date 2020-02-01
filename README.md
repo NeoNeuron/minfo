@@ -6,13 +6,13 @@ To calculate time-delayed mutual information (TDMI) for neurophysiology data, es
 - src: C/C++ source files;
 - pys: python scripts for example and automating tests;
 - test: test codes;
+- utils: utilities for data processing, developed in Python;
 
 ## Get Started
 Currnetly, there are four distinct modules here, including
 
 ```bash
 # basic modules
-bin/cal-spike	# convert single spike train to binary series from raw neural data
 bin/cal-lfp		# generate lfp series from raw neural data
 bin/cal-mi		# calculate tdmi between the data with preprocessed by previous two modules
 # extended module
@@ -21,17 +21,12 @@ bin/cal-lfp-simple	# generate simplified version of lfp data with given target n
 ### Compile
 
 ```bash
-make 					# for three basic modules
+make 					# for two basic modules
 make bin/cal-lfp-simple	# for extended module
 ```
 ### How to use
 
 ```bash
-# convert binary spike train of No. 1 (-I index)
-# from [raw_data] to [output_filename] with time range (5e2, 1e5)ms,
-# sampling step 0.5 ms
-bin/cal-spike --prefix [/path/of/data] [raw_data] [output_filename] -I 1 -t 5e2 1e5 --dt 0.5 [-f]
-
 # calculate lfp series from raw data to [output_filename]
 # with given config.ini settings
 bin/cal-lfp --prefix [/path/of/data] [path/of/config.ini] [output_filename]
@@ -45,3 +40,80 @@ bin/cal-mi --prefix [/path/of/data] -t BD --drange 40 40 --dx 0.001 [input_filen
 ```
 
 Use ```-h``` for more detailed help
+
+#### Python Utilities
+- Spike train generator
+
+*Convert raw raster data to single spike train with binary data format.*
+
+```bash
+>>> python utils/spike.py -h
+usage: spike.py [-h] [--id ID] [--dt DT] [-t TIME_RANGE TIME_RANGE] [-v]
+                prefix raster_fname spike_fname
+
+Single spike train generator.
+
+positional arguments:
+  prefix                working directory of source data and output data
+  raster_fname          filename of raster data, *.csv
+  spike_fname           filename of spike train data, *.npy
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --id ID               id of neuron (default: 0)
+  --dt DT               time step of sampling (default: 0.5)
+  -t TIME_RANGE TIME_RANGE, --time_range TIME_RANGE TIME_RANGE
+                        time range of spike train (default: [0, None])
+  -v, --verbose         enable verbose of running time
+```
+
+- Python TDMI calculator
+
+*For quick test and small-sized calculation.*
+
+*10 times slower than c++ version*
+
+```bash
+>>> python utils/info.py -h
+usage: info.py [-h] [-v] prefix spike_fname lfp_fname tdmi_fname bins ndelays
+
+Calculate TDMI script.
+
+positional arguments:
+  prefix         working directory of source data and output data
+  spike_fname    filename of spike train data, *.npy
+  lfp_fname      filename of LFP data, *.npy
+  tdmi_fname     filename of output TDMI data, *.csv
+  bins           number of bins in LFP histogram
+  ndelays        number of delayed bins in TDMI calculation
+
+optional arguments:
+  -h, --help     show this help message and exit
+  -v, --verbose  enable verbose of running time
+
+```
+
+- LFP filter
+
+*Filter original LFP data.*
+
+*Optional filters: 'alpha', 'beta', 'theta', 'gamma', 'delta', 'ripple', 'lfp'*
+
+```bash
+>>> python utils/filter.py -h
+usage: filter.py [-h] [-v]
+                 prefix lfp_fname {alpha,beta,theta,gamma,delta,ripple,lfp}
+
+Frequency filter for LFP signal.
+
+positional arguments:
+  prefix                working directory of source data and output data
+  lfp_fname             filename of LFP data
+  {alpha,beta,theta,gamma,delta,ripple,lfp}
+                        frequency band
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose         enable verbose of running time
+
+```

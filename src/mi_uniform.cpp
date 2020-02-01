@@ -12,15 +12,15 @@
 #include <algorithm>
 using namespace std;
 
-double Max(vector<double>& data) {
+inline double Max(vector<double>& data) {
   return *(max_element(data.begin(), data.end()));
 }
 
-double Min(vector<double>& data) {
+inline double Min(vector<double>& data) {
   return *(min_element(data.begin(), data.end()));
 }
 
-void JointPDF(vector<bool>& x, vector<bool>& y, vector<vector<double> >& jointpdf) {
+void JointPDF(vector<int>& x, vector<int>& y, vector<vector<double> >& jointpdf) {
   size_t num_pairs = x.size();
   vector<vector<int> > count_xy(2, vector<int>(2, 0));
   for (size_t i = 0; i < num_pairs; i++) {
@@ -59,7 +59,7 @@ void JointPDF(vector<double>& x, vector<double>& y, vector<vector<double> >& joi
   }
 }
 
-void JointPDF(vector<bool>& binary_spikes, vector<double>& lfp, vector<vector<double> >& jointpdf, double binsize) {
+void JointPDF(vector<int>& binary_spikes, vector<double>& lfp, vector<vector<double> >& jointpdf, double binsize) {
   size_t num_pairs = binary_spikes.size();
   double lfp_min = Min(lfp);
   size_t bin_num = ceil((Max(lfp) - lfp_min) / binsize);
@@ -75,7 +75,7 @@ void JointPDF(vector<bool>& binary_spikes, vector<double>& lfp, vector<vector<do
   }
 }
 
-void JointPDF2bins(vector<bool>& binary_spikes, vector<double>& lfp, vector<vector<double> >& jointpdf, double threshold) {
+void JointPDF2bins(vector<int>& binary_spikes, vector<double>& lfp, vector<vector<double> >& jointpdf, double threshold) {
   size_t num_pairs = binary_spikes.size();
   vector<vector<int> > joint_count(2, vector<int>(2, 0));
   for (size_t i = 0; i < num_pairs; i++) {
@@ -125,65 +125,55 @@ double MI(vector<vector<double> >& jointpdf) {
   return mi;
 }
 
-double MIBB(vector<bool>& x, vector<bool>& y) {
+double MIBB(vector<int>& x, vector<int>& y) {
   if (x.size() != y.size()) {
-    cout << "ERROR: x and y don't have the same length." << endl;
-    return 0;
-  } else {
-    // Joint Probability Histograms;
-    vector<vector<double> > joint_xy;
-    JointPDF(x, y, joint_xy);
-    return MI(joint_xy);
+    throw length_error("x and y not equally sized");
   }
+  // Joint Probability Histograms;
+  vector<vector<double> > joint_xy;
+  JointPDF(x, y, joint_xy);
+  return MI(joint_xy);
 }
 
 double MIDD(vector<double>& x, vector<double>& y, double x_binsize, double y_binsize, bool pdf_output_flag) {
-  //  Compare the length of x & y;
   if (x.size() != y.size()) {
-    cout << "ERROR: x and y don't have the same length." << endl;
-    return 0;
-  } else {
-    // Calculate joint probability distribution function;
-    vector<vector<double> > jointpdf;
-    JointPDF(x, y, jointpdf, x_binsize, y_binsize);
-    if (pdf_output_flag) Print2D("./data/mi/joint_pdf.csv", jointpdf, "trunc");
-    return MI(jointpdf);
+    throw length_error("x and y not equally sized");
   }
+  // Calculate joint probability distribution function;
+  vector<vector<double> > jointpdf;
+  JointPDF(x, y, jointpdf, x_binsize, y_binsize);
+  if (pdf_output_flag) Print2D("./data/mi/joint_pdf.csv", jointpdf, "trunc");
+  return MI(jointpdf);
 }
 
-double MIBD(vector<bool>& bool_series, vector<double>& double_series, double binsize, bool pdf_output_flag) {
-  if (bool_series.size() != double_series.size()) {
-    cout << "ERROR: x and y don't have the same length." << endl;
-    return 0;
-  } else {
-    // Calculate joint probability distribution function;
-    vector<vector<double> > jointpdf;
-    JointPDF(bool_series, double_series, jointpdf, binsize);
-    if (pdf_output_flag) Print2D("./data/mi/joint_pdf.csv", jointpdf, "trunc");
-    return MI(jointpdf);
+double MIBD(vector<int>& binary_series, vector<double>& double_series, double binsize, bool pdf_output_flag) {
+  if (binary_series.size() != double_series.size()) {
+    throw length_error("x and y not equally sized");
   }
+  vector<vector<double> > jointpdf;
+  JointPDF(binary_series, double_series, jointpdf, binsize);
+  if (pdf_output_flag) Print2D("./data/mi/joint_pdf.csv", jointpdf, "trunc");
+  return MI(jointpdf);
 }
 
-double MIBD2bins(vector<bool>& bool_series, vector<double>& double_series, double threshold) {
-  if (bool_series.size() != double_series.size()) {
-    cout << "ERROR: x and y don't have the same length." << endl;
-    return 0;
-  } else {
-    // Calculate joint probability distribution function;
-    vector<vector<double> > jointpdf;
-    JointPDF2bins(bool_series, double_series, jointpdf, threshold);
-    return MI(jointpdf);
+double MIBD2bins(vector<int>& binary_series, vector<double>& double_series, double threshold) {
+  if (binary_series.size() != double_series.size()) {
+    throw length_error("x and y not equally sized");
   }
+  // Calculate joint probability distribution function;
+  vector<vector<double> > jointpdf;
+  JointPDF2bins(binary_series, double_series, jointpdf, threshold);
+  return MI(jointpdf);
 }
 
-void TDMI(vector<bool>& x, vector<bool>& y, vector<double> & tdmi, vector<size_t> &range) {
+void TDMI(vector<int>& x, vector<int>& y, vector<double> & tdmi, vector<size_t> &range) {
   tdmi.clear();
   tdmi.resize(range[0] + range[1] + 1, 0);
   // No shift;
   tdmi[range[0]] = MIBB(x, y);
   // Negative shift;
-  vector<bool> x_copy = x;
-  vector<bool> y_copy = y;
+  vector<int> x_copy = x;
+  vector<int> y_copy = y;
   for (size_t i = 0; i < range[0]; i++) {
     x_copy.erase(x_copy.begin());
     y_copy.erase(y_copy.end() - 1);
@@ -233,14 +223,14 @@ void TDMI(vector<double>& x, vector<double>& y, vector<double>& tdmi, vector<siz
   }
 }
 
-void TDMI(vector<bool>& x, vector<double>& y, vector<double>& tdmi, vector<size_t> &range, double binsize) {
+void TDMI(vector<int>& x, vector<double>& y, vector<double>& tdmi, vector<size_t> &range, double binsize) {
   // initialize container of tdmi;
   tdmi.clear();
   tdmi.resize(range[0] + range[1] + 1, 0);
   // prepare series;
   size_t res = range[0];
   if (res < range[1]) res = range[1];
-  vector<bool> x_copy(x.begin(), x.end() - res);
+  vector<int> x_copy(x.begin(), x.end() - res);
   vector<double> y_copy(y.begin(), y.end() - res);
   // No shift;
   tdmi[range[0]] = MIBD(x_copy, y_copy, binsize, false);
@@ -261,14 +251,14 @@ void TDMI(vector<bool>& x, vector<double>& y, vector<double>& tdmi, vector<size_
   return;
 }
 
-void TDMI2bins(vector<bool>& x, vector<double>& y, vector<double>& tdmi, vector<size_t> &range, double threshold) {
+void TDMI2bins(vector<int>& x, vector<double>& y, vector<double>& tdmi, vector<size_t> &range, double threshold) {
   // initialize container of tdmi;
   tdmi.clear();
   tdmi.resize(range[0] + range[1] + 1, 0);
   // prepare series;
   size_t res = range[0];
   if (res < range[1]) res = range[1];
-  vector<bool> x_copy(x.begin(), x.end() - res);
+  vector<int> x_copy(x.begin(), x.end() - res);
   vector<double> y_copy(y.begin(), y.end() - res);
   // No shift;
   tdmi[range[0]] = MIBD2bins(x_copy, y_copy, threshold);
