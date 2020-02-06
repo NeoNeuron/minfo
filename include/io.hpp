@@ -6,11 +6,8 @@
 //***************
 #include <cstdlib>
 #include <iostream>
-#include <fstream>
 #include <sstream>
 #include <iomanip>
-#include <string>
-#include <vector>
 using namespace std;
 
 //	Read 2 dimensional information;

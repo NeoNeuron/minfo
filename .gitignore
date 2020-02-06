@@ -1,11 +1,17 @@
+# ignore exclude folder
+exclude
+
+# ignore pys
+pys
+
 # ignore OSX folder conig file
 .DS_Store
 
 # ignore compiling folders
-bin/
-obj/
-dep/
-tmp/
+bin
+obj
+dep
+tmp
 
 # ignore pictures
 *.png
@@ -15,3 +21,9 @@ tmp/
 
 # ignore cython files
 *.pyc
+
+# ignore performance test folder
+perf
+
+# ignore *.json
+*.json
