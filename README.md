@@ -4,32 +4,49 @@ To calculate time-delayed mutual information (TDMI) for neurophysiology data, es
 - doc: Necessary documents and configuration files;
 - include: C/C++ header files;
 - src: C/C++ source files;
-- pys: python scripts for example and automating tests;
+- external: third-party modules;
 - test: test codes;
 - utils: utilities for data processing, developed in Python;
 
 ## Get Started
-Currnetly, there are four distinct modules here, including
+### Installation
+
+1. Build external `cnpy` library
+	
+	```bash
+	mkdir build
+	cd build
+	cmake ../external/cnpy -DCMAKE_INSTALL_PREFIX=../
+	make
+	make install
+	```
+
+2. Build main modules
+
+	```bash
+	cd ..
+	make
+	```
+	
+### How to use
+Currnetly, there are five distinct modules here, including
 
 ```bash
 # basic modules
-bin/cal-lfp		# generate lfp series from raw neural data
-bin/cal-mi		# calculate tdmi between the data with preprocessed by previous two modules
+bin/cal-lfp			# generate lfp series from raw neural data
+bin/cal-mi			# calculate tdmi between types of data
 # extended module
-bin/cal-lfp-simple	# generate simplified version of lfp data with given target neurons
+bin/cal-lfp-simple	# generate current (LFP) data of single unit
+bin/cal-cc			# cross-correlation between continuous variables
+bin/cal-sta			# spike triggered average
 ```
-### Compile
 
-```bash
-make 					# for two basic modules
-make bin/cal-lfp-simple	# for extended module
-```
-### How to use
+Sample usage:
 
 ```bash
 # calculate lfp series from raw data to [output_filename]
 # with given config.ini settings
-bin/cal-lfp --prefix [/path/of/data] [path/of/config.ini] [output_filename]
+bin/cal-lfp --prefix [/path/of/data] -c [path/of/config.ini] [output_filename]
 # default config.ini : doc/config_lfp_default.ini
 
 # calculate tdmi between spike trains and LFP (-t BD),
