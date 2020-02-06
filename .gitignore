@@ -11,6 +11,8 @@ pys
 bin
 obj
 dep
+lib
+build
 tmp
 
 # ignore pictures
