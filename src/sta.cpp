@@ -1,3 +1,9 @@
+//***************
+//  Copyright: Kyle Chen
+//  Author: Kyle Chen
+//  Created: 2018-01-26
+//  Description: Spike triggled average calculation program, between spikes and spikes;
+//***************
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -6,12 +12,11 @@
 #include <stdexcept>
 #include <chrono>
 #include <boost/program_options.hpp>
-#include <xtensor/xarray.hpp>
-#include <xtensor/xnpy.hpp>
+#include "cnpy.h"
 using namespace std;
 namespace po = boost::program_options;
 
-inline double STA(vector<bool>& x, vector<double>& y) {
+inline double STA(vector<int>& x, vector<double>& y) {
   return inner_product(x.begin(), x.end(), y.begin(), 0.0) / accumulate(x.begin(), x.end(), 0.0);
 }
 
@@ -49,19 +54,19 @@ int main(int argc, const char* argv[]) {
   string ifilename1 = ifilename[0], ifilename2 = ifilename[1];
   vector<size_t> range = vm["drange"].as< vector<size_t> >();
 
-  vector<bool> spike;
-  vector<double> lfp;
-  auto x_bool_series = xt::load_npy<bool>(dir + ifilename1);
-  auto x_double_series = xt::load_npy<double>(dir + ifilename2);
-  spike.insert(spike.end(), &x_bool_series(0), &x_bool_series(x_bool_series.shape()[0]-1));
-  lfp.insert(lfp.end(), &x_double_series(0), &x_double_series(x_double_series.shape()[0]-1));
+  auto arr_spike = cnpy::npy_load(dir + ifilename1);
+  auto arr_lfp = cnpy::npy_load(dir + ifilename2);
+  int* p_spike = arr_spike.data<int>();
+  double* p_lfp = arr_lfp.data<double>();
+  vector<int> spike(p_spike, p_spike + arr_spike.shape.front());
+  vector<double> lfp(p_lfp, p_lfp + arr_lfp.shape.front());
   // Set time range;
   int ntd = range[0];
   int ptd = range[1];
   // Calculate STA:
   vector<double> sta(ntd + ptd + 1);
   size_t res = ntd > ptd ? ntd : ptd;
-  vector<bool> spike_copy(spike.begin(), spike.end() - res);
+  vector<int> spike_copy(spike.begin(), spike.end() - res);
   vector<double> lfp_copy(lfp.begin(), lfp.end() - res);
   // No shift;
   sta[ntd] = STA(spike_copy, lfp_copy);
