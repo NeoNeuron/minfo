@@ -100,9 +100,5 @@ def mutual_info(data):
 
 
 if __name__ == '__main__':
-    import numpy as np 
     dat = np.load('sample.npy')
     print( mutual_info(dat) )
-
-
-
