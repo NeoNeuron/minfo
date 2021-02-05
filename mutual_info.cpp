@@ -78,3 +78,16 @@ double MutualInfo(vector<double> &x, vector<double> &y) {
 
     return PartialSum(x_int, y_int, edges, true)/n + log(n);
 }
+
+vector<double> TDMI(vector<double>& x, vector<double>& y, int n_delay) {
+    vector<double> tdmi(n_delay);
+    vector<double> x_buffer(x.size()), y_buffer(y.size());
+    for (int i = 0; i < n_delay; i ++) {
+        x_buffer.assign(x.begin(), x.end()-i);
+        y_buffer.assign(y.begin()+i, y.end());
+        tdmi[i] = MutualInfo(x_buffer, y_buffer);
+        x_buffer.clear();
+        y_buffer.clear();
+    }
+    return tdmi;
+}

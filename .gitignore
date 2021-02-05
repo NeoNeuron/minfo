@@ -1,0 +1,8 @@
+.DS_Store
+
+*.so
+*.o
+*.pyc
+*.json
+
+mutual_info_cy.cpp

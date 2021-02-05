@@ -19,10 +19,13 @@ int main() {
     // shuffle(y_d.begin(), y_d.end(), rand_gen);
     auto start = chrono::system_clock::now();
 
-    double mi = MutualInfo(x_d, y_d);
+    vector<double> tdmi = TDMI(x_d, y_d, 10);
     
     auto finish = chrono::system_clock::now();
-    cout << setprecision(16) << mi << endl;
+    // print computed tdmi value
+    for (auto i: tdmi) {
+        cout << setprecision(3) << i << endl;
+    }
 	chrono::duration<double> elapsed_seconds = finish-start;
     printf(">> it takes : \t%3.3f s\n", elapsed_seconds.count());
     return 0;

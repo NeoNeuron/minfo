@@ -11,11 +11,10 @@
 #include <algorithm>
 #include <numeric>
 
+// Reference: 
+//  https://stackoverflow.com/questions/1577475/c-sorting-and-keeping-track-of-indexes
 template <typename T>
 std::vector<size_t> argsort(const std::vector<T> &v) {
-    // Reference: 
-    //  https://stackoverflow.com/questions/1577475/c-sorting-and-keeping-track-of-indexes
-
     // initialize original index locations
     std::vector<size_t> idx(v.size());
     std::iota(idx.begin(), idx.end(), 0);
@@ -31,5 +30,9 @@ std::vector<size_t> argsort(const std::vector<T> &v) {
 }
 
 double MutualInfo(std::vector<double> &x, std::vector<double> &y);
+
+// Compute the delayed MutualInfo from x to y
+// i.e. I(tau) = I(x(t),y(t+tau))
+std::vector<double> TDMI(std::vector<double>& x, std::vector<double>& y, int n_delay);
 
 #endif //__MUTUAL_INFO_
