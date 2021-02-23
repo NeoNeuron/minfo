@@ -6,7 +6,7 @@ import numpy
 ext_modules = [Extension("mutual_info_cy", 
                sources=["mutual_info_cy.pyx", "mutual_info.cpp"], 
                language='c++',
-               extra_compile_args=['-O2'],
+               extra_compile_args=['-O2', '-std=c++11'],
                include_dirs=[numpy.get_include()])
               ]
 
