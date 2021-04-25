@@ -1,6 +1,6 @@
 import numpy as np
-import minfo.mutual_info as mi_cy
-import minfo.tdmi as TDMI_cy
+from minfo import mutual_info as mi_cy
+from minfo import tdmi as TDMI_cy
 import mutual_info.mutual_info as mi_py
 import time
 
