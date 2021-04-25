@@ -20,8 +20,8 @@ Python(Cython)-based mutual information estimator with adaptive partitioning str
 To install via pip:
 
 ```bash
-git clone https://github.com/NeoNeuron/mutual_information
-cd mutual_information
+git clone https://github.com/NeoNeuron/minfo
+cd minfo
 python install -e .
 ```
 
