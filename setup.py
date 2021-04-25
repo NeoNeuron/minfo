@@ -1,13 +1,28 @@
-from distutils.core import setup
-from distutils.extension import Extension
-from Cython.Distutils import build_ext
+import setuptools
+from Cython.Build import cythonize
 import numpy
 
-ext_modules = [Extension("mutual_info_cy", 
-               sources=["mutual_info_cy.pyx", "mutual_info.cpp"], 
-               language='c++',
-               extra_compile_args=['-O2', '-std=c++11'],
-               include_dirs=[numpy.get_include()])
-              ]
+ext_modules = [
+    setuptools.Extension(
+        "minfo", 
+        sources=["src/minfo.pyx", "src/mutual_info.cpp"], 
+        language='c++',
+        extra_compile_args=['-O2', '-std=c++11'],
+        include_dirs=['include/', numpy.get_include()]
+    )
+]
 
-setup(cmdclass = {'build_ext': build_ext}, ext_modules = ext_modules)
+setuptools.setup(
+    name="minfo",
+    author="Kyle Chen",
+    author_email="kchen513@sjtu.edu.cn",
+
+    version="0.0.1",
+    url="https://github.com/NeoNeuron/mutual_information",
+
+    description="Python(Cython)-based mutual information estimator with adaptive partitioning strategy.",
+
+    install_requires=['numpy', 'cython'],
+    packages=setuptools.find_packages(),
+    ext_modules = cythonize(ext_modules),
+)

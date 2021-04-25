@@ -5,4 +5,5 @@
 *.pyc
 *.json
 
-mutual_info_cy.cpp
+src/minfo.cpp
+minfo.egg-info

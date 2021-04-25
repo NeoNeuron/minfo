@@ -1,7 +1,7 @@
 import numpy as np
-from mutual_info_cy import mutual_info as mi_cy
-from mutual_info_cy import tdmi as TDMI_cy
-from mutual_info import mutual_info as mi_py
+import minfo.mutual_info as mi_cy
+import minfo.tdmi as TDMI_cy
+import mutual_info.mutual_info as mi_py
 import time
 
 def TDMI_py(dat, n):

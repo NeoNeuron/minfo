@@ -2,25 +2,35 @@
 
 ## Adaptive partitioning algorithm for mutual information estimation
 
-Python implementation of mutual information estimation, where adaptive partitioning strategy is applied.
+Python(Cython)-based mutual information estimator with adaptive partitioning strategy.
 
 **ATTENTION:** This algorithm is designed for mutual information estimation between continuous variables. Applying it to discrete variables with few number of values might lead to large deviations. Modules for finite discrete cases are to be developed. 
 
 ## Reference
+
 - Darbellay, G. A., & Vajda, I. (1999). Estimation of the information by an adaptive partitioning of the observation space. IEEE Transactions on Information Theory, 45(4), 1315-1321.
- 
-## Dependence:
+
+## Requirements
+
 - numpy
 - cython
 
-## Compile Cython library
+## Installation
+
+To install via pip:
+
 ```bash
-python setup.py build_ext --inplace
+git clone https://github.com/NeoNeuron/mutual_information
+cd mutual_information
+python install -e .
 ```
 
 ## Example
+
 ```python
-from mutual_info_cy import mutual_info, tdmi
+from minfo import mutual_info, tdmi
+# mutual_info := mutual information estimator
+# tdmi := time-delayed mutual information extimator
 n = 100
 x = np.random.rand(n)
 y = np.random.rand(n)
@@ -42,12 +52,10 @@ tdmi(x, y, n_delay)
 - **RAM:** *32 GB 2400 MHz DDR4*
 
 ```bash
-python mi_test.py
+cd example
+python example.py
 [INFO]: mi (cython) takes 0.025 s
 [INFO]: tdmi (cython) takes 0.101 s
 [INFO]: mi (python) takes 0.369 s
 [INFO]: tdmi (python) takes 0.477 s
 ```
-
-## TODO
-- [x] Accelerate it with C/C++.
