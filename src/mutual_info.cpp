@@ -1,6 +1,7 @@
 #include <array>
 #include <cmath>
 #include "mutual_info.h"
+#include "omp.h"
 using namespace std;
 
 double MI_core(int Np, array<int, 4> &edges) {
@@ -88,6 +89,18 @@ vector<double> TDMI(vector<double>& x, vector<double>& y, int n_delay) {
         tdmi[i] = MutualInfo(x_buffer, y_buffer);
         x_buffer.clear();
         y_buffer.clear();
+    }
+    return tdmi;
+}
+
+vector<double> TDMI_omp(vector<double>& x, vector<double>& y, int n_delay) {
+    vector<double> tdmi(n_delay);
+#pragma omp parallel for
+    for (int i = 0; i < n_delay; i ++) {
+        vector<double> x_buffer(x.size()), y_buffer(y.size());
+        x_buffer.assign(x.begin(), x.end()-i);
+        y_buffer.assign(y.begin()+i, y.end());
+        tdmi[i] = MutualInfo(x_buffer, y_buffer);
     }
     return tdmi;
 }

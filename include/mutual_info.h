@@ -35,4 +35,7 @@ double MutualInfo(std::vector<double> &x, std::vector<double> &y);
 // i.e. I(tau) = I(x(t),y(t+tau))
 std::vector<double> TDMI(std::vector<double>& x, std::vector<double>& y, int n_delay);
 
+// OpenMP accelerated version
+std::vector<double> TDMI_omp(std::vector<double>& x, std::vector<double>& y, int n_delay);
+
 #endif //__MUTUAL_INFO_

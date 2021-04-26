@@ -7,7 +7,7 @@ ext_modules = [
         "minfo", 
         sources=["src/minfo.pyx", "src/mutual_info.cpp"], 
         language='c++',
-        extra_compile_args=['-O2', '-std=c++11'],
+        extra_compile_args=['-O2', '-std=c++11', '-fopenmp'],
         include_dirs=['include/', numpy.get_include()]
     )
 ]
@@ -17,7 +17,7 @@ setuptools.setup(
     author="Kyle Chen",
     author_email="kchen513@sjtu.edu.cn",
 
-    version="0.0.1",
+    version="0.0.2",
     url="https://github.com/NeoNeuron/minfo",
 
     description="Python(Cython)-based mutual information estimator with adaptive partitioning strategy.",
