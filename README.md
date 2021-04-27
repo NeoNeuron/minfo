@@ -15,6 +15,18 @@ Python(Cython)-based mutual information estimator with adaptive partitioning str
 - numpy
 - cython
 
+> **Install OpenMP Library** \
+> *Install OpenMP Library to enable CPU parallel acceleration for Time-delayed Mutual Information calculation.*
+> > Linux:
+> > ```
+> > sudo apt-get install libomp-dev
+> > ```
+> > MacOS:
+> > ```
+> > brew install libomp
+> >```
+> 
+
 ## Installation
 
 To install via pip:
@@ -28,9 +40,10 @@ python install -e .
 ## Example
 
 ```python
-from minfo import mutual_info, tdmi
+from minfo import mutual_info, tdmi, tdmi_omp
 # mutual_info := mutual information estimator
-# tdmi := time-delayed mutual information extimator
+# tdmi := time-delayed mutual information estimator
+# tdmi_omp := TDMI estimator with openMP accelerated
 n = 100
 x = np.random.rand(n)
 y = np.random.rand(n)
@@ -41,6 +54,9 @@ mutual_info(x,y)
 # compute time-delayed mutual information
 n_delay = 10
 tdmi(x, y, n_delay)
+
+# OpenMP accelerated version
+tdmi_omp(x, y, n_delay)
 ```
 
 ## Compare performance with pure Python version
@@ -52,10 +68,11 @@ tdmi(x, y, n_delay)
 - **RAM:** *32 GB 2400 MHz DDR4*
 
 ```bash
-cd example
-python example.py
-[INFO]: mi (cython) takes 0.025 s
-[INFO]: tdmi (cython) takes 0.101 s
-[INFO]: mi (python) takes 0.369 s
-[INFO]: tdmi (python) takes 0.477 s
+$ cd example
+$ python example.py
+[INFO]:   mi (cython)        takes 0.024 s
+[INFO]: tdmi (cython)        takes 0.435 s
+[INFO]: tdmi (cython/OpenMP) takes 0.089 s
+[INFO]:   mi (python)        takes 0.434 s
+[INFO]: tdmi (python)        takes 0.865 s
 ```

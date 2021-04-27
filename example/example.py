@@ -23,20 +23,20 @@ dat[:,1] = dat[:,0]
 n_delay = 100
 t0 = time.time()
 mi_cy(dat[:,0], dat[:,1])
-print(f'[INFO]: mi (cython) takes {time.time() - t0:3.3f} s')
+print(f'[INFO]:   mi (cython)        takes {time.time() - t0:3.3f} s')
 
 t0 = time.time()
 TDMI_cy(dat[:,0], dat[:,1], n_delay)
-print(f'[INFO]: tdmi (cython) takes {time.time() - t0:3.3f} s')
+print(f'[INFO]: tdmi (cython)        takes {time.time() - t0:3.3f} s')
 
 t0 = time.time()
-TDMI_cy_omp(dat, n_delay)
+TDMI_cy_omp(dat[:,0], dat[:,1], n_delay)
 print(f'[INFO]: tdmi (cython/OpenMP) takes {time.time() - t0:3.3f} s')
 
 t0 = time.time()
 mi_py(dat)
-print(f'[INFO]: mi (python) takes {time.time() - t0:3.3f} s')
+print(f'[INFO]:   mi (python)        takes {time.time() - t0:3.3f} s')
 
 t0 = time.time()
 TDMI_py(dat, n_delay)
-print(f'[INFO]: tdmi (python) takes {time.time() - t0:3.3f} s')
+print(f'[INFO]: tdmi (python)        takes {time.time() - t0:3.3f} s')
