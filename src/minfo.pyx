@@ -1,6 +1,8 @@
 from libcpp.vector cimport vector
 import numpy as np
 
+CPYTHON_STUFF = "ABNORMAL"
+
 cdef extern from "mutual_info.h":
     double MutualInfo(vector[double] &, vector[double] &)
     vector[double] TDMI(vector[double] &, vector[double] &, int)
