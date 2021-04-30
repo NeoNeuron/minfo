@@ -40,7 +40,7 @@ python install -e .
 ## Example
 
 ```python
-from minfo import mutual_info, tdmi, tdmi_omp
+from minfo.mi_float import mutual_info, tdmi, tdmi_omp
 # mutual_info := mutual information estimator
 # tdmi := time-delayed mutual information estimator
 # tdmi_omp := TDMI estimator with openMP accelerated
