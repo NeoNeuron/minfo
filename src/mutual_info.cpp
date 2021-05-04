@@ -82,12 +82,11 @@ double MutualInfo(vector<double> &x, vector<double> &y) {
 
 vector<double> TDMI(vector<double>& x, vector<double>& y, int n_delay) {
     vector<double> tdmi(n_delay);
-    vector<double> x_buffer(x.size()), y_buffer(y.size());
+    vector<double> x_buffer(x.begin(), x.end()-n_delay+1);
+    vector<double> y_buffer(y.size()-n_delay+1);
     for (int i = 0; i < n_delay; i ++) {
-        x_buffer.assign(x.begin(), x.end()-i);
-        y_buffer.assign(y.begin()+i, y.end());
+        y_buffer.assign(y.begin()+i, y.end()-n_delay+1+i);
         tdmi[i] = MutualInfo(x_buffer, y_buffer);
-        x_buffer.clear();
         y_buffer.clear();
     }
     return tdmi;
@@ -95,11 +94,11 @@ vector<double> TDMI(vector<double>& x, vector<double>& y, int n_delay) {
 
 vector<double> TDMI_omp(vector<double>& x, vector<double>& y, int n_delay) {
     vector<double> tdmi(n_delay);
+    vector<double> x_buffer(x.begin(), x.end()-n_delay+1);
 #pragma omp parallel for
     for (int i = 0; i < n_delay; i ++) {
-        vector<double> x_buffer(x.size()), y_buffer(y.size());
-        x_buffer.assign(x.begin(), x.end()-i);
-        y_buffer.assign(y.begin()+i, y.end());
+        vector<double> y_buffer(y.size()-n_delay+1);
+        y_buffer.assign(y.begin()+i, y.end()-n_delay+1+i);
         tdmi[i] = MutualInfo(x_buffer, y_buffer);
     }
     return tdmi;
