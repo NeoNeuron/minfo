@@ -6,12 +6,12 @@ on:
 
 jobs:
 
-  build:
+  build-ubuntu:
 
     runs-on: ${{matrix.os}}
     strategy:
       matrix: 
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest, windows-latest]
     steps:
 
       - name: Checkout
@@ -37,3 +37,31 @@ jobs:
         if: "!contains(env.COMMIT_MESSAGE, 'skip ci')" 
         run: pip install -e .
         
+  build-macOS:
+
+    runs-on: macOS-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - name: Set up Python
+        if: "!contains(env.COMMIT_MESSAGE, 'skip ci')"
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      
+      - name: Install dependencies
+        if: "!contains(env.COMMIT_MESSAGE, 'skip ci')"
+        run: |
+          brew install libomp
+          python -m pip install --upgrade pip wheel
+          pip install -r requirements.txt
+      
+      - name: Build minfo
+        if: "!contains(env.COMMIT_MESSAGE, 'skip ci')" 
+        run: pip install -e .
