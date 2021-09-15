@@ -29,7 +29,9 @@ jobs:
       
       - name: Install dependencies
         if: "!contains(env.COMMIT_MESSAGE, 'skip ci')"
-        run: python -m pip install --upgrade pip wheel
+        run: |
+          python -m pip install --upgrade pip wheel
+          pip install -r requirements.txt
       
       - name: Build minfo
         if: "!contains(env.COMMIT_MESSAGE, 'skip ci')" 
