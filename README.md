@@ -34,7 +34,7 @@ To install via pip:
 ```bash
 git clone https://github.com/NeoNeuron/minfo
 cd minfo
-python install -e .
+pip install -e .
 ```
 
 ## Example
