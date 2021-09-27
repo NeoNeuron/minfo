@@ -6,12 +6,12 @@ on:
 
 jobs:
 
-  build-ubuntu:
+  build:
 
     runs-on: ${{matrix.os}}
     strategy:
       matrix: 
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest]
     steps:
 
       - name: Checkout
@@ -30,11 +30,49 @@ jobs:
           python-version: 3.7
           auto-activate-base: false
 
-      - name: Install GCC
-        if: "!contains(${{matrix.osx}}, 'macos')"
+      - name: Install dependencies
+        if: "!contains(env.COMMIT_MESSAGE, 'skip ci')"
+        shell: bash -l {0}
         run: |
-          brew install gcc
-          export c++=gcc-11
+          conda install --file requirements.txt
+      
+      - name: Build minfo
+        if: "!contains(env.COMMIT_MESSAGE, 'skip ci')" 
+        shell: bash -l {0}
+        run: pip install -e .
+
+      - name: Run example
+        if: "!contains(env.COMMIT_MESSAGE, 'skip ci')" 
+        shell: bash -l {0}
+        run: |
+          cd example
+          python example.py
+
+  build-macOS:
+
+    runs-on: macos-latest
+    env:
+      CC: /usr/local/bin/gcc-11
+      CXX: /usr/local/bin/g++-11
+      gcc: /usr/local/bin/gcc-11
+      g++: /usr/local/bin/g++-11
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - name: Set up Conda
+        if: "!contains(env.COMMIT_MESSAGE, 'skip ci')"
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: test
+          # environment-file: environment.yml
+          python-version: 3.7
+          auto-activate-base: false
 
       - name: Install dependencies
         if: "!contains(env.COMMIT_MESSAGE, 'skip ci')"
