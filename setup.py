@@ -19,7 +19,7 @@ setuptools.setup(
     author="Kyle Chen",
     author_email="kchen513@sjtu.edu.cn",
 
-    version="0.0.3",
+    version="0.0.4",
     url="https://github.com/NeoNeuron/minfo",
 
     description="Python(Cython)-based mutual information estimator with adaptive partitioning strategy.",
