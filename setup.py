@@ -9,7 +9,7 @@ ext_modules = [
         sources=["src/minfo.pyx", "src/mutual_info.cpp"], 
         language='c++',
         extra_compile_args=['-O2', '-std=c++11',] 
-            + ['-fopenmp=libomp' if sys.platform.startswith('darwin') else '-fopenmp'],
+            + ['-fopenmp=libomp5' if sys.platform.startswith('darwin') else '-fopenmp'],
         include_dirs=['include/', numpy.get_include()]
     )
 ]
