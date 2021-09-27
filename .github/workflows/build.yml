@@ -30,9 +30,15 @@ jobs:
           python-version: 3.7
           auto-activate-base: false
 
+      - name: Install GCC
+        if: "!contains(${{matrix.osx}}, 'macos')"
+        run: |
+          brew install gcc
+          export c++=gcc-11
+
       - name: Install dependencies
-        shell: bash -l {0}
         if: "!contains(env.COMMIT_MESSAGE, 'skip ci')"
+        shell: bash -l {0}
         run: |
           conda install --file requirements.txt
       
