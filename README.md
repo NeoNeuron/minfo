@@ -10,10 +10,17 @@ Python(Cython)-based mutual information estimator with adaptive partitioning str
 
 - Darbellay, G. A., & Vajda, I. (1999). Estimation of the information by an adaptive partitioning of the observation space. IEEE Transactions on Information Theory, 45(4), 1315-1321.
 
-## Requirements
+## Prerequisite
 
 - numpy
 - cython
+
+```bash
+# Make sure install numpy using conda. 
+# Installation with pip may lead to unexpected errors.
+conda install numpy cython 
+```
+
 
 > **Install OpenMP Library** \
 > *Install OpenMP Library to enable CPU parallel acceleration for Time-delayed Mutual Information calculation.*
