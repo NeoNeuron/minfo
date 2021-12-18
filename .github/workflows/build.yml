@@ -83,7 +83,7 @@ jobs:
       - name: Build minfo
         if: "!contains(env.COMMIT_MESSAGE, 'skip ci')" 
         shell: bash -l {0}
-        run: pip install -e .
+        run: pip install -v -e .
 
       - name: Run example
         if: "!contains(env.COMMIT_MESSAGE, 'skip ci')" 

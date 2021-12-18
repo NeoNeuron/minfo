@@ -2,13 +2,21 @@ import setuptools
 import sys
 from Cython.Build import cythonize
 import numpy
+import sysconfig
+
+extra_compile_args = sysconfig.get_config_var('CFLAGS')
+if extra_compile_args is not None:
+    extra_compile_args = extra_compile_args.split()
+    extra_compile_args += ['-O2', '-std=c++11', '-fopenmp']
+else:
+    extra_compile_args = ['-O2', '-std=c++11', '-fopenmp']
 
 ext_modules = [
     setuptools.Extension(
         "minfo.mi_float", 
         sources=["src/minfo.pyx", "src/mutual_info.cpp"], 
         language='c++',
-        extra_compile_args=['-O2', '-std=c++11', '-fopenmp'],
+        extra_compile_args= extra_compile_args,
             # + ['-fopenmp=libomp5' if sys.platform.startswith('darwin') else '-fopenmp'],
         include_dirs=['include/', numpy.get_include()]
     )
