@@ -21,19 +21,13 @@ DEPS = $(SRCS:.cpp=.d)
 DEPS := $(addprefix $(DIR_DEP)/, $(DEPS))
 OBJS := $(SRCS:.cpp=.o)
 OBJS := $(addprefix $(DIR_OBJ)/, $(OBJS))
-BINS := $(DIR_BIN)/cal-mi $(DIR_BIN)/cal-lfp $(DIR_BIN)/cal-lfp-simple $(DIR_BIN)/cal-sta $(DIR_BIN)/cal-cc
+BINS := $(DIR_BIN)/cal-mi $(DIR_BIN)/cal-sta $(DIR_BIN)/cal-cc
 
 .PHONY : all
 $all : $(DIRS) $(BINS)
 	@echo '>> ' $(BINS) ' are done'
 
-$(DIR_BIN)/cal-lfp : $(DIR_OBJ)/lfp.o $(DIR_OBJ)/main_lfp.o
-	$(CXX) -o $@ $^ $(LDLIBS)
-
 $(DIR_BIN)/cal-mi : $(DIR_OBJ)/mi_uniform.o $(DIR_OBJ)/main.o
-	$(CXX) -o $@ $^ $(LDLIBS)
-
-$(DIR_BIN)/cal-lfp-simple : $(DIR_OBJ)/lfp.o $(DIR_OBJ)/main_lfp_simple.o
 	$(CXX) -o $@ $^ $(LDLIBS)
 
 $(DIR_BIN)/cal-sta : $(DIR_OBJ)/sta.o
