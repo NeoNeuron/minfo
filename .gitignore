@@ -1,11 +1,33 @@
+# ignore exclude folder
+exclude
+
+# ignore pys
+pys
+
+# ignore OSX folder conig file
 .DS_Store
-dist
+
+# ignore compiling folders
+bin
+obj
+dep
+lib
 build
+tmp
+dist
 minfo.egg-info
 
+# ignore pictures
+*.png
+*.jpg
+*.jpeg
+*.eps
+
+# ignore typed files
+*.pyc
 *.so
 *.o
-*.pyc
 *.json
 
+# ignore specific files
 src/minfo.cpp
