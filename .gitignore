@@ -1,5 +1,7 @@
 .DS_Store
 dist
+build
+minfo.egg-info
 
 *.so
 *.o
@@ -7,4 +9,3 @@ dist
 *.json
 
 src/minfo.cpp
-minfo.egg-info

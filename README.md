@@ -8,7 +8,7 @@ Python(Cython)-based mutual information estimator with adaptive partitioning str
 
 ## Reference
 
-- Darbellay, G. A., & Vajda, I. (1999). Estimation of the information by an adaptive partitioning of the observation space. IEEE Transactions on Information Theory, 45(4), 1315-1321.
+- Darbellay, G. A., & Vajda, I. (1999). [Estimation of the information by an adaptive partitioning of the observation space. IEEE Transactions on Information Theory](https://ieeexplore.ieee.org/document/761290), 45(4), 1315-1321.
 
 ## Prerequisite
 
