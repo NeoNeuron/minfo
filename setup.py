@@ -30,7 +30,7 @@ setuptools.setup(
     version="0.0.5",
     url="https://github.com/NeoNeuron/minfo",
 
-    description="Python(Cython)-based mutual information estimator with adaptive partitioning strategy.",
+    description="Python-based mutual information estimator, designed for multiple data types.",
 
     install_requires=['numpy', 'cython', 'numba'],
     packages=setuptools.find_packages(),

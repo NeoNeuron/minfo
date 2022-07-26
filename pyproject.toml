@@ -1,0 +1,19 @@
+[project]
+name = "minfo"
+version = "0.0.5"
+authors = [
+  { name="Kai Chen", email="kchen513@sjtu.edu.cn" },
+]
+description = "Python-based mutual information estimator, designed for multiple data types."
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/neoneuron/minfo"
+"Bug Tracker" = "https://github.com/neoneuron/minfo/issues"
