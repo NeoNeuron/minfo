@@ -1,25 +1,17 @@
 # Mutual Information Estimator
 
-## Adaptive partitioning algorithm for mutual information estimation
-
-Python(Cython)-based mutual information estimator with adaptive partitioning strategy.
-
-**ATTENTION:** This algorithm is designed for mutual information estimation between continuous variables. Applying it to discrete variables with few number of values might lead to large deviations. Modules for finite discrete cases are to be developed. 
-
-## Reference
-
-- Darbellay, G. A., & Vajda, I. (1999). [Estimation of the information by an adaptive partitioning of the observation space. IEEE Transactions on Information Theory](https://ieeexplore.ieee.org/document/761290), 45(4), 1315-1321.
+*Python-based mutual information estimator, designed for multiple data types.*
 
 ## Prerequisite
 
-- numpy
-- cython
-- numba
+- [Numpy](https://numpy.org)
+- [Cython](https://cython.readthedocs.io/en/stable/index.html)
+- [Numba](https://numba.pydata.org)
 
 ```bash
 # Make sure install numpy using conda. 
 # Installation with pip may lead to unexpected errors.
-conda install numpy cython 
+conda install numpy cython numba
 ```
 
 
@@ -51,25 +43,48 @@ cd minfo
 pip install -e .
 ```
 
-## Example
+## Get Started
+
+### MI with uniform bins 
 
 ```python
 from minfo.mi_float import mutual_info, TDMI
-# mutual_info := mutual information estimator
-# tdmi := time-delayed mutual information estimator
+# mutual_info : mutual information estimator
+#        tdmi : time-delayed mutual information estimator
 n = 100
 x = np.random.rand(n)
 y = np.random.rand(n)
 
 # compute mutual information
-mutual_info(x,y, bins=50)
+mutual_info(x,y, bins=50) # default algorithm: 'uniform'
+
+# compute time-delayed mutual information (Parallel accelerated)
+n_delay = 10
+TDMI(x, y, n_delay, bins=50) # default algorithm: 'uniform'
+```
+
+### MI with adaptive bins
+
+**ATTENTION:** This algorithm is designed for mutual information estimation between continuous variables. Applying it to discrete variables with few number of values might lead to large deviations. Modules for finite discrete cases are to be developed. 
+
+**Reference**
+
+- Darbellay, G. A., & Vajda, I. (1999). [Estimation of the information by an adaptive partitioning of the observation space. IEEE Transactions on Information Theory](https://ieeexplore.ieee.org/document/761290), 45(4), 1315-1321.
+
+```python
+from minfo.mi_float import mutual_info, TDMI
+# mutual_info : mutual information estimator
+#        tdmi : time-delayed mutual information estimator
+n = 100
+x = np.random.rand(n)
+y = np.random.rand(n)
+
+# compute mutual information
 mutual_info(x,y, algorithm='adaptive')
 
 # compute time-delayed mutual information (Parallel accelerated)
 n_delay = 10
-TDMI(x, y, n_delay, bins=50)
 TDMI(x, y, n_delay, algorithm='adaptive')
-
 ```
 
 ## Compare performance with pure Python version
