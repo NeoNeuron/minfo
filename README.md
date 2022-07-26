@@ -14,6 +14,7 @@ Python(Cython)-based mutual information estimator with adaptive partitioning str
 
 - numpy
 - cython
+- numba
 
 ```bash
 # Make sure install numpy using conda. 
@@ -53,39 +54,39 @@ pip install -e .
 ## Example
 
 ```python
-from minfo.mi_float import mutual_info, tdmi, tdmi_omp
+from minfo.mi_float import mutual_info, TDMI
 # mutual_info := mutual information estimator
 # tdmi := time-delayed mutual information estimator
-# tdmi_omp := TDMI estimator with openMP accelerated
 n = 100
 x = np.random.rand(n)
 y = np.random.rand(n)
 
 # compute mutual information
-mutual_info(x,y)
+mutual_info(x,y, bins=50)
+mutual_info(x,y, algorithm='adaptive')
 
-# compute time-delayed mutual information
+# compute time-delayed mutual information (Parallel accelerated)
 n_delay = 10
-tdmi(x, y, n_delay)
+TDMI(x, y, n_delay, bins=50)
+TDMI(x, y, n_delay, algorithm='adaptive')
 
-# OpenMP accelerated version
-tdmi_omp(x, y, n_delay)
 ```
 
 ## Compare performance with pure Python version
 
 **Test OS info:**
 - **Laptop:** *MacBook Pro (15-inch, 2018)*
-- **System** *version: macOS Big Sur 11.2 (20D64)*
+- **System** *version: macOS Big Sur 12.4 (21F79)*
 - **CPU:** *2.6 GHz 6-Core Intel Core i7*
 - **RAM:** *32 GB 2400 MHz DDR4*
 
 ```bash
 $ cd example
 $ python example.py
-[INFO]:   mi (cython)        takes 0.024 s
-[INFO]: tdmi (cython)        takes 0.435 s
-[INFO]: tdmi (cython/OpenMP) takes 0.089 s
-[INFO]:   mi (python)        takes 0.434 s
-[INFO]: tdmi (python)        takes 0.865 s
+[INFO]:   mi_adaptive (python)  takes 0.025 s
+[INFO]:   mi_uniform  (numba)   takes 0.000 s
+[INFO]:   mi_adaptive (cython)  takes 0.009 s
+[INFO]: tdmi_adaptive (python)  takes 0.560 s
+[INFO]: tdmi_uniform  (numba)   takes 0.005 s
+[INFO]: tdmi_adaptive (cython)  takes 0.076 s
 ```

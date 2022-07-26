@@ -33,9 +33,9 @@ double MutualInfo(std::vector<double> &x, std::vector<double> &y);
 
 // Compute the delayed MutualInfo from x to y
 // i.e. I(tau) = I(x(t),y(t+tau))
-std::vector<double> TDMI(std::vector<double>& x, std::vector<double>& y, int n_delay);
+std::vector<double> TDMI(std::vector<double>& x, std::vector<double>& y, std::vector<int>& delays);
 
 // OpenMP accelerated version
-std::vector<double> TDMI_omp(std::vector<double>& x, std::vector<double>& y, int n_delay);
+std::vector<double> TDMI_omp(std::vector<double>& x, std::vector<double>& y, std::vector<int>& delays);
 
 #endif //__MUTUAL_INFO_

@@ -13,7 +13,7 @@ else:
 
 ext_modules = [
     setuptools.Extension(
-        "minfo.mi_float", 
+        "minfo.mi_c", 
         sources=["src/minfo.pyx", "src/mutual_info.cpp"], 
         language='c++',
         extra_compile_args= extra_compile_args,
@@ -24,15 +24,15 @@ ext_modules = [
 
 setuptools.setup(
     name="minfo",
-    author="Kyle Chen",
+    author="Kai Chen",
     author_email="kchen513@sjtu.edu.cn",
 
-    version="0.0.4",
+    version="0.0.5",
     url="https://github.com/NeoNeuron/minfo",
 
     description="Python(Cython)-based mutual information estimator with adaptive partitioning strategy.",
 
-    install_requires=['numpy', 'cython'],
+    install_requires=['numpy', 'cython', 'numba'],
     packages=setuptools.find_packages(),
     ext_modules = cythonize(ext_modules),
 )

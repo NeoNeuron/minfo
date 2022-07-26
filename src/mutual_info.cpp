@@ -80,25 +80,27 @@ double MutualInfo(vector<double> &x, vector<double> &y) {
     return PartialSum(x_int, y_int, edges, true)/n + log(n);
 }
 
-vector<double> TDMI(vector<double>& x, vector<double>& y, int n_delay) {
-    vector<double> tdmi(n_delay);
-    vector<double> x_buffer(x.begin(), x.end()-n_delay+1);
-    vector<double> y_buffer(y.size()-n_delay+1);
-    for (int i = 0; i < n_delay; i ++) {
-        y_buffer.assign(y.begin()+i, y.end()-n_delay+1+i);
+vector<double> TDMI(vector<double>& x, vector<double>& y, vector<int>& delays) {
+    vector<double> tdmi(delays.size());
+    auto it = max_element(delays.begin(), delays.end());
+    vector<double> x_buffer(x.begin(), x.end()-*it+1);
+    vector<double> y_buffer(y.size()-*it+1);
+    for (int i = 0; i < delays.size(); i ++) {
+        y_buffer.assign(y.begin()+delays[i], y.end()-*it+1+delays[i]);
         tdmi[i] = MutualInfo(x_buffer, y_buffer);
         y_buffer.clear();
     }
     return tdmi;
 }
 
-vector<double> TDMI_omp(vector<double>& x, vector<double>& y, int n_delay) {
-    vector<double> tdmi(n_delay);
-    vector<double> x_buffer(x.begin(), x.end()-n_delay+1);
+vector<double> TDMI_omp(vector<double>& x, vector<double>& y, vector<int>& delays) {
+    vector<double> tdmi(delays.size());
+    auto it = max_element(delays.begin(), delays.end());
+    vector<double> x_buffer(x.begin(), x.end()-*it+1);
 #pragma omp parallel for
-    for (int i = 0; i < n_delay; i ++) {
-        vector<double> y_buffer(y.size()-n_delay+1);
-        y_buffer.assign(y.begin()+i, y.end()-n_delay+1+i);
+    for (int i = 0; i < delays.size(); i ++) {
+        vector<double> y_buffer(y.size()-*it+1);
+        y_buffer.assign(y.begin()+delays[i], y.end()-*it+1+delays[i]);
         tdmi[i] = MutualInfo(x_buffer, y_buffer);
     }
     return tdmi;
