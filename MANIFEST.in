@@ -1,3 +1,5 @@
 graft include
 include README.md
 include LICENSE
+include pyproject.toml
+include src/minfo.pyx

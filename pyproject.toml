@@ -1,6 +1,6 @@
 [project]
 name = "minfo"
-version = "0.0.5"
+version = "0.0.6"
 authors = [
   { name="Kai Chen", email="kchen513@sjtu.edu.cn" },
 ]
@@ -12,6 +12,13 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+]
+
+[build-system]
+requires = [
+  "numpy>=1.23.5",
+  "cython>=0.29.32",
+  "numba>=0.56.4",
 ]
 
 [project.urls]

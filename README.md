@@ -8,13 +8,6 @@
 - [Cython](https://cython.readthedocs.io/en/stable/index.html)
 - [Numba](https://numba.pydata.org)
 
-```bash
-# Make sure install numpy using conda. 
-# Installation with pip may lead to unexpected errors.
-conda install numpy cython numba
-```
-
-
 > **Install OpenMP Library** \
 > *Install OpenMP Library to enable CPU parallel acceleration for Time-delayed Mutual Information calculation.*
 > > Linux:
