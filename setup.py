@@ -27,7 +27,7 @@ setuptools.setup(
     author="Kai Chen",
     author_email="kchen513@sjtu.edu.cn",
 
-    version="0.0.6",
+    version="0.0.7",
     url="https://github.com/NeoNeuron/minfo",
 
     description="Python-based mutual information estimator, designed for multiple data types.",

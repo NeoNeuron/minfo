@@ -1,6 +1,6 @@
 [project]
 name = "minfo"
-version = "0.0.6"
+version = "0.0.7"
 authors = [
   { name="Kai Chen", email="kchen513@sjtu.edu.cn" },
 ]
@@ -16,9 +16,10 @@ classifiers = [
 
 [build-system]
 requires = [
-  "numpy>=1.23.5",
-  "cython>=0.29.32",
-  "numba>=0.56.4",
+  "numpy",
+  "cython",
+  "numba",
+  "intel-openmp",
 ]
 
 [project.urls]
